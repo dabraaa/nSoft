@@ -1,0 +1,18 @@
+# Define wallpaper source and destination
+$sourcePath = "C:\Users\test_one\Desktop\nsoft-desktop-fullhd-wide.jpg"
+$destinationPath = "C:\Windows\Temp\nsoft-desktop-fullhd-wide.jpg"
+
+# Ensure the file exists
+if (-Not (Test-Path $sourcePath)) {
+    Write-Host "Source file does not exist: $sourcePath"
+    exit 1
+}
+
+# Copy the file to a system-wide location
+Copy-Item -Path $sourcePath -Destination $destinationPath -Force
+
+# Set the wallpaper in Windows registry
+Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name Wallpaper -Value $destinationPath
+
+# Refresh the wallpaper
+RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters
